@@ -1,9 +1,9 @@
 FROM python:3.10-slim
 
-# อัปเดตและติดตั้ง Google Chrome สำหรับให้บอทใช้งาน
+# อัปเดตและติดตั้ง Google Chrome ด้วยวิธีใหม่ (รองรับ Linux รุ่นล่าสุด)
 RUN apt-get update && apt-get install -y wget gnupg unzip && \
-    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-    sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' && \
+    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/googlechrome-linux-keyring.gpg && \
+    sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/googlechrome-linux-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
     apt-get update && apt-get install -y google-chrome-stable && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
